@@ -39,7 +39,7 @@ for(const [ url, num ] of rows) {
   try {
     let i = 0
     for(const currPath of paths) {
-        await page.goto(currPath, { waitUntil: 'networkidle2' });
+        await page.goto(currPath, { waitUntil: 'networkidle0' });
         // await page.waitFor(1000)
         const base64img = await page.screenshot({
           path: path.join(imageFolderPath, `${i+1}.png`),
