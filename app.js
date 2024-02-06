@@ -1,14 +1,17 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs')
-const path = require('path')
+const path = require('path');
+const { argv } = require('process');
 
-const folderPath = path.join(__dirname, 'htmlFiles')
-const imageFolderPath = path.join(__dirname, 'images')
+const folderPath = path.join(process.cwd(), 'htmlFiles')
+const imageFolderPath = path.join(process.cwd(), 'images')
+
+const csvPath = argv[2]
 
 if(!fs.existsSync(folderPath)) fs.mkdirSync(folderPath)
 if(!fs.existsSync(imageFolderPath)) fs.mkdirSync(imageFolderPath)
 
-const rows = fs.readFileSync(path.join(__dirname, 'main.csv')).toString().split("\n").map(ln => ln.split(','))
+const rows = fs.readFileSync(csvPath).toString().split("\n").map(ln => ln.split(','))
 
 const chunk = (arr, size) =>
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
