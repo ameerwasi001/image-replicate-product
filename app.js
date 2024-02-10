@@ -21,10 +21,12 @@ const chunk = (arr, size) =>
 let i = 0
 const paths = []
 
-for(const [ url, num ] of rows) {
+for(const [ url_, num ] of rows) {
+    const rep = url_.split('"').join('').replace('"file://', '').split('file://').join('')
+    const url = url_.startsWith('"file://') ? `data:image/png;base64, ${new Buffer(fs.readFileSync(rep)).toString('base64')}` : url_
     const initArray = chunk(new Array(parseInt(num)).fill(url), 5)
     const str = initArray.map(arr => {
-        return `<div style="margin-top: 0.3%; width: 100%; align-self: center">${arr.map(_ => `<img style="width: 19%; margin-left: 0.5%" src=${url}/>`).join("\n")}</div>`
+        return `<div style="margin-top: 0.3%; width: 100%; align-self: center">${arr.map(_ => `<img style="width: 19%; margin-left: 0.5%" src="${url}"/>`).join("\n")}</div>`
     }).join("\n")
     const div = `<body style="margin: 0">
         <div style="width: 100vw; display: flex; flex-direction: column">${str}</div>
@@ -42,7 +44,7 @@ for(const [ url, num ] of rows) {
   try {
     let i = 0
     for(const currPath of paths) {
-        await page.goto(currPath, { waitUntil: 'networkidle0' });
+        await page.goto(`file://${currPath}`, { waitUntil: 'networkidle0', });
         // await page.waitFor(1000)
         const base64img = await page.screenshot({
           path: path.join(imageFolderPath, `${i+1}.png`),
