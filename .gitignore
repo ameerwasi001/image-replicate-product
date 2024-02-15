@@ -2,5 +2,6 @@ node_modules
 images
 htmlFiles
 *.exe
+*.zip
 app-macos
 app-linux
